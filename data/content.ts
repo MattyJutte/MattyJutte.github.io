@@ -9,7 +9,7 @@ export const content = {
     name: "Matty Jutte",
     firstName: "Matty",
     lastName: "Jutte",
-    initials: "M.A.t J",
+    initials: "M.A.T J",
     role: "Software Engineering student",
     email: "Mattyjutte07@gmail.com",
     // Bevestigd door de bestaande Git-remote van deze repository.
