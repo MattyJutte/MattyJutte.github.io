@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { SignatureConstellation } from "@/components/signature-constellation";
 import { InteractiveEffects } from "@/components/interactive-effects";
 import { CopyEmail } from "@/components/copy-email";
 import { assetPath } from "@/lib/asset-path";
@@ -75,7 +76,7 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
                 )}
               </div>
             </div>
-            <figure className="hero-portrait">
+            <SignatureConstellation labels={c.hero.constellation}>
               <div className="portrait-frame">
                 <Image
                   src={assetPath(c.profile.photo.src)}
@@ -90,7 +91,7 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
                   <Icon name="code" size={24} />
                 </span>
               </div>
-            </figure>
+            </SignatureConstellation>
           </div>
           <div className="container hero-bottom">
             <a href="#over-mij" className="explore-link">

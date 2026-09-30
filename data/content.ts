@@ -55,6 +55,15 @@ export const content = {
     eyebrow: "NIEUWSGIERIG VAN NATURE. BOUWER IN WORDING.",
     introduction:
       "Van een goed idee naar iets dat werkt. Ik duik graag in code, leer door te doen en bouw het liefst samen aan de volgende stap.",
+    constellation: {
+      initials: "MJ",
+      label: "Een kleine wereld van ideeën",
+      hint: "Beweeg of tik tussen de sterren",
+      assemble: "Ontdek mijn signatuur",
+      scatter: "Terug naar de sterren",
+      pause: "Animatie pauzeren",
+      play: "Animatie afspelen",
+    },
     currentLabel: "Op dit moment",
     current: "Leren & bouwen bij Competa IT",
     explore: "Ontdek meer over mij",
@@ -302,6 +311,15 @@ export const englishContent: SiteContent = {
     eyebrow: "CURIOUS BY NATURE. LEARNING TO BUILD.",
     introduction:
       "From a good idea to something that works. I enjoy diving into code, learning by doing and taking the next step together.",
+    constellation: {
+      ...content.hero.constellation,
+      label: "A little world of ideas",
+      hint: "Move or tap among the stars",
+      assemble: "Discover my signature",
+      scatter: "Back to the stars",
+      pause: "Pause animation",
+      play: "Play animation",
+    },
     currentLabel: "Right now",
     current: "Learning & building at Competa IT",
     explore: "Get to know me",

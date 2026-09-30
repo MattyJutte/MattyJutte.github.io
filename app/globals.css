@@ -1390,3 +1390,125 @@ svg {
     break-inside: avoid;
   }
 }
+
+/* Een persoonlijke sterrenbol rond de foto; canvas blijft puur decoratief. */
+.constellation {
+  width: min(480px, 100%);
+  padding: 0;
+}
+.constellation::before {
+  display: none;
+}
+.constellation-stage {
+  position: relative;
+  aspect-ratio: 1;
+  isolation: isolate;
+}
+.constellation-photo {
+  position: absolute;
+  inset: 12% 16%;
+  transform: rotate(-4deg);
+  transition:
+    opacity 700ms,
+    transform 900ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.constellation-photo .portrait-frame {
+  height: 100%;
+}
+.constellation-photo .portrait-image {
+  height: 100%;
+  object-fit: cover;
+}
+.constellation-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.constellation-orbit {
+  position: absolute;
+  inset: 3%;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+  background: radial-gradient(ellipse, var(--accent-soft), transparent 72%);
+  box-shadow:
+    0 0 80px var(--accent-soft),
+    inset 0 0 50px var(--accent-soft);
+}
+.constellation-orbit::before,
+.constellation-orbit::after {
+  content: "";
+  position: absolute;
+  inset: 8% -5%;
+  border: 1px solid color-mix(in srgb, var(--accent) 12%, transparent);
+  border-radius: 50%;
+  transform: rotate(-30deg) scaleY(0.66);
+}
+.constellation-orbit::after {
+  transform: rotate(45deg) scaleY(0.66);
+}
+.constellation-caption {
+  position: absolute;
+  right: 5%;
+  bottom: 7%;
+  font:
+    10px ui-monospace,
+    monospace;
+  letter-spacing: 2px;
+  color: var(--accent);
+}
+.is-signature .constellation-photo {
+  opacity: 0.08;
+  transform: rotate(0) scale(0.92);
+}
+.constellation-controls {
+  position: relative;
+  text-align: center;
+  margin-top: 8px;
+}
+.constellation-label {
+  color: var(--muted);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.constellation-controls > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+}
+.signature-button {
+  min-height: 44px;
+  padding: 8px 16px;
+  border: 1px solid var(--line-strong);
+  border-radius: 24px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: 12px;
+}
+.signature-button > span {
+  color: var(--accent);
+  font-size: 20px;
+  vertical-align: middle;
+  margin-right: 7px;
+}
+.signature-button:hover,
+.signature-button[aria-pressed="true"] {
+  border-color: var(--accent);
+  background: var(--surface-raised);
+  box-shadow: 0 0 24px var(--accent-soft);
+}
+.constellation-hint {
+  color: var(--subtle);
+  font-size: 10px;
+  margin-top: 10px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .constellation-pause,
+  .constellation-hint {
+    display: none;
+  }
+}

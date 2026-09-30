@@ -61,6 +61,8 @@ De build controleert of het bestand bestaat. Zonder PDF staat er “CV binnenkor
 
 ### Interactieve effecten
 
+Rond de profielfoto staat een interactieve sterrenbol. Beweeg de muis om de punten opzij te duwen of tik op de foto voor een golf door de sterren. Met “Ontdek mijn signatuur” vormen de punten de letters MJ; dezelfde knop brengt de sterrenbol terug. De animatie heeft een pauzeknop, stopt buiten beeld en in een verborgen tabblad en toont een stilstaand patroon bij een voorkeur voor minder beweging. Mobiel scrollen blijft normaal werken. Teksten en initialen staan in `hero.constellation`; de implementatie staat in `components/signature-constellation.tsx`, zonder extra bibliotheken.
+
 Een dunne balk bovenaan volgt de leesvoortgang. Skill- en hobbykaartjes en de foto reageren subtiel op de muis; op touchscreens wordt de muisgloed uitgeschakeld. De contactsectie heeft een kopieerknop met een toegankelijke succes- of foutmelding. De effecten respecteren de systeemvoorkeur voor minder beweging. De componenten staan in `components/interactive-effects.tsx` en `components/copy-email.tsx`; de stijlen staan in `app/globals.css`.
 
 ### Profielfoto aanpassen
