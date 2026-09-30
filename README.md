@@ -50,6 +50,19 @@ Beide versies staan in `data/content.ts`: **`content`** bevat Nederlands en **`e
 
 De teksten zijn vooraf vertaald: er is geen externe vertaaldienst of API nodig. Zonder JavaScript toont de statische site Nederlands.
 
+### CV toevoegen
+
+1. Sla je CV op als PDF met de naam **`cv.pdf`** (kleine letters).
+2. Kopieer het naar **`public/cv.pdf`**, naast je profielfoto. Gebruik geen lokaal Windows-pad als link.
+3. Start `npm run dev` om de downloadknop bovenaan te bekijken. Herstart de ontwikkelserver als je het bestand net hebt toegevoegd en de melding nog zichtbaar is.
+4. Bouw met `npm run build` en push zowel het PDF-bestand als de code naar GitHub. De bestaande workflow publiceert alles samen.
+
+De build controleert of het bestand bestaat. Zonder PDF staat er “CV binnenkort beschikbaar”; met PDF verschijnt automatisch “Download CV” (ook vertaald naar Engels). Het pad staat in `profile.cvPath` in `data/content.ts` en werkt ook met een GitHub Pages-subpad. Je kunt later gewoon het PDF-bestand vervangen en opnieuw pushen. Het CV is publiek downloadbaar: gebruik een versie zonder je thuisadres of telefoonnummer als je die niet openbaar wilt maken.
+
+### Interactieve effecten
+
+Een dunne balk bovenaan volgt de leesvoortgang. Skill- en hobbykaartjes en de foto reageren subtiel op de muis; op touchscreens wordt de muisgloed uitgeschakeld. De contactsectie heeft een kopieerknop met een toegankelijke succes- of foutmelding. De effecten respecteren de systeemvoorkeur voor minder beweging. De componenten staan in `components/interactive-effects.tsx` en `components/copy-email.tsx`; de stijlen staan in `app/globals.css`.
+
 ### Profielfoto aanpassen
 
 Je foto staat in **`public/matty-jutte.jpg`** en verschijnt naast je naam bovenaan de website. Het is een kopie van je originele foto; de weergave schaalt mee met het scherm. Het bestand wordt met de statische site meegepubliceerd, zodat je laptop en OneDrive niet nodig zijn om de foto te laden.

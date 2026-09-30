@@ -957,6 +957,88 @@ svg {
   color: var(--muted);
 }
 
+/* Subtiele feedback, zonder extra animatiebibliotheek. */
+.reading-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 3px;
+  z-index: 60;
+  pointer-events: none;
+  background: linear-gradient(90deg, var(--accent-strong), var(--accent));
+  transform: scaleX(var(--progress, 0));
+  transform-origin: left;
+}
+.cv-unavailable {
+  color: var(--muted);
+  border: 1px dashed var(--line-strong);
+  font-weight: 400;
+}
+.copy-email {
+  margin-top: -20px;
+}
+.copy-feedback {
+  min-height: 2.5em;
+  margin: 8px 0 12px;
+  color: var(--accent);
+  font-size: 12px;
+}
+.skill-card,
+.hobby-card {
+  position: relative;
+  isolation: isolate;
+}
+.skill-card::after,
+.hobby-card::after,
+.portrait-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    240px circle at var(--pointer-x, 50%) var(--pointer-y, 50%),
+    color-mix(in srgb, var(--accent) 13%, transparent),
+    transparent 75%
+  );
+  opacity: 0;
+  transition: opacity 250ms;
+}
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .skill-card:hover::after,
+  .hobby-card:hover::after,
+  .portrait-frame:hover::after {
+    opacity: 1;
+  }
+  .portrait-image {
+    transition: transform 600ms ease;
+  }
+  .portrait-frame:hover .portrait-image {
+    transform: scale(1.025);
+  }
+  .button svg,
+  .icon-tile,
+  .hobby-card > svg {
+    transition: transform 220ms ease;
+  }
+  .button:hover svg,
+  .button:focus-visible svg {
+    transform: translateY(-2px);
+  }
+  .skill-card:hover .icon-tile,
+  .hobby-card:hover > svg {
+    transform: rotate(-6deg);
+  }
+  .timeline-marker {
+    transition:
+      box-shadow 200ms,
+      background-color 200ms;
+  }
+  .timeline-item:hover .timeline-marker {
+    background: var(--accent);
+    box-shadow: 0 0 0 5px var(--accent-soft);
+  }
+}
+
 @media (min-width: 1440px) {
   .hero {
     padding-top: 174px;
@@ -1250,12 +1332,20 @@ svg {
     animation: none !important;
     transition: none !important;
   }
+  .skill-card:hover,
+  .hobby-card:hover,
+  .button:hover {
+    transform: none;
+  }
   .reveal-pending {
     opacity: 1;
     transform: none;
   }
 }
 @media print {
+  .reading-progress {
+    display: none;
+  }
   .site-header,
   .hero-portrait,
   .hero-buttons,
