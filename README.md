@@ -162,3 +162,91 @@ public/favicon.svg         Eigen MJ-favicon
 Kleuren, afmetingen en responsive regels staan in `app/globals.css`. De kleurvariabelen bovenaan hebben een donkere en lichte variant. Tailwind verzorgt onder andere de responsive rasters. De Nederlandse inhoud wordt als HTML geëxporteerd; de taalwisselaar, navigatie, themawisselaar en scrollanimatie werken met JavaScript in de browser. Bij een voorkeur voor minder beweging worden animaties en smooth scroll uitgeschakeld.
 
 Officiële documentatie: [Next.js static export](https://nextjs.org/docs/app/guides/static-exports), [Tailwind met Next.js](https://tailwindcss.com/docs/installation/framework-guides/nextjs) en [GitHub Pages met een eigen workflow](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).
+
+## Interactieve ontdeklaag
+
+De gewone portfolio blijft de hoofdingang. Speelse onderdelen openen op verzoek in
+scrollbare panelen, met een zichtbare sluitknop, Escape en focusherstel. Alle nieuwe
+bediening volgt de Nederlandse/Engelse taal en het lichte/donkere thema.
+
+- **Minigolf:** open bij **Golf & tennis**. Drie verschillende holes met kaartobstakels.
+  Sleep vanaf de bal naar achteren en laat los; dezelfde bediening werkt met een
+  vinger. De stippellijn en krachtmeter tonen de slag. Richting/kracht zijn ook
+  instelbaar met sliders en pijltjestoetsen bij de slagknop; spatie slaat. Een hole
+  kan opnieuw, de bal kan met een strafslag terug en een ronde kan opnieuw starten.
+  Sluiten/hervatten bewaart de ronde tijdens dit bezoek; het beste volledige resultaat
+  wordt lokaal bewaard.
+- **Programmeerlab:** open onder **Skills**. Zet start en eind, teken/wis muren met
+  tikken en slepen, en bekijk BFS stap voor stap. Er zijn pauze/hervatten, snelheid,
+  reset en een voorbeeld. Met pijltjestoetsen navigeer je het raster, Enter/spatie
+  past het gekozen gereedschap toe. De codeweergave toont het echte bronbestand
+  `lib/discovery/pathfinding.ts`. `predev` en `prebuild` kopiëren dit automatisch
+  naar `public/code/pathfinding.ts`, zodat de link ook op GitHub Pages werkt.
+- **Sterrenatelier:** onder de foto. Stel snelheid, aantrekkingskracht/afstoting en
+  bol/ring/spiraal in. MJ-transformatie en pauze blijven beschikbaar. Reset zet alles
+  terug naar de oorspronkelijke rustige weergave.
+- **Kleine verrassingen:** activeer het MJ-logo, het eerste skillicoon en de subtiele
+  vraag in de footer om de deeltjes, technische signaalstroom en Byte te vinden.
+- **Arcade:** voer `↑ ↑ ↓ ↓ ← → ← → B A` in buiten invoervelden en spelpanelen,
+  of activeer het MJ-logo vijf keer kort achter elkaar. Het logo is een aparte knop;
+  de naam/homeknop blijft navigeren. Het boekje biedt ook een directe toegankelijke
+  ingang. In de reactietest tik je pas wanneer de ster groen wordt; te vroeg telt
+  niet. Enter/spatie werkt ook. Retro is optioneel en uitschakelen/sluiten beëindigt
+  Arcade en de test.
+- **Ontdekkingenboekje:** de vaste knop rechtsonder toont zeven ontdekkingen, hints,
+  ingangen, records en een bevestigde reset. **Rustige weergave** stopt decoratieve
+  beweging; de systeeminstelling `prefers-reduced-motion` wordt ook gerespecteerd.
+
+### Opbouw en opslag
+
+`components/discovery/` bevat de gedeelde dialog, het boekje, de verrassingen en de
+op verzoek geladen spellen. `lib/discovery/` bevat de pure BFS-, golf- en
+ontgrendellogica plus veilige browseropslag. De spellen gebruiken geen backend,
+account, geluid of nieuwe runtime-dependencies. Animatielussen/timers worden
+opgeruimd bij sluiten en pauzeren in verborgen tabs. Golf en het lab pauzeren ook wanneer het
+speelvlak uit beeld scrollt; de sterrenbol gebruikt een IntersectionObserver.
+
+De sleutel `portfolio-discoveries-v1` bewaart ontdekkingen, golfrecord en reactierecord.
+Ongeldige gegevens worden gevalideerd; geblokkeerde `localStorage` valt terug op
+geheugen voor het huidige bezoek. Taal- en themavoorkeuren blijven apart bewaard.
+De boekjereset wist ontdekkingen, records en de lopende golfronde; inhoud en taal-/themavoorkeuren blijven behouden.
+
+### Controleren
+
+Gebruik Node 22.18+ (Node 24 aanbevolen) voor de directe TypeScript-logica-tests:
+
+```bash
+npm test
+npm run lint
+npm run typecheck
+npm run build
+npm run preview
+```
+
+De gerichte tests controleren kortste routes/geen-route, botsingen/frictie/hole-detectie,
+speelbaarheid van alle drie holes, score/records, Konami, logotikken en ongeldige opslag.
+De productiebuild exporteert naar `out/`; de bestaande GitHub Pages-workflow blijft
+behouden. Er wordt vanuit deze implementatie niets automatisch gepusht/gepubliceerd.
+Zie `IMPLEMENTATION_PROGRESS.md` voor de uitgevoerde visuele en functionele controles.
+
+Voor de optionele browsercontrole is Playwright nodig (geen runtime-dependency).
+Met een afzonderlijke installatie kun je de echte gebouwde site controleren:
+
+```bash
+# Start de preview op een vrije poort, bijvoorbeeld 3107.
+npm exec serve -- out --listen 3107
+# In een tweede terminal, met een eigen Playwright-installatie:
+PORTFOLIO_URL=http://localhost:3107 PLAYWRIGHT_MODULE=/absolute/path/to/playwright/index.mjs node tests/browser.mjs
+```
+
+De browsercontrole bewaart screenshots in `/tmp/portfolio-qa` (of `QA_OUTPUT`) en
+controleert onder meer alle drie holes, touch, 320/390px, rotatie, beide talen/thema's,
+focus, opslag/reset en de Arcade. In deze omgeving is de productiebuild ook getest
+met `npm run build -- --webpack`, omdat de sandbox Turbopack's compilerpoort blokkeert.
+
+De gerichte browserregressies kunnen met dezelfde Playwright-omgeving worden gestart
+via `node tests/lifecycle.mjs`: focus na een paneelwissel, animatiepauze in een verborgen
+tab, reset van de lopende golfronde en een volledig zichtbare golfbaan in lage
+liggende schermen. De gecombineerde browserrun is geslaagd met 58 controles,
+plus deze zes aanvullende controles. Mobiel is gecontroleerd in Chromium-emulatie;
+Safari/Firefox en fysieke telefoons zijn niet getest.

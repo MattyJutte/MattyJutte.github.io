@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useLanguage } from "@/lib/use-language";
+import { discover } from "@/lib/discovery/store";
 import type { SiteContent } from "@/data/content";
 
 const COUNT = 180;
@@ -32,6 +34,12 @@ export function SignatureConstellation({
   const stage = useRef<HTMLDivElement>(null);
   const [signature, setSignature] = useState(false);
   const [paused, setPaused] = useState(false);
+  const nl = useLanguage().language === "nl";
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [speed, setSpeed] = useState(1);
+  const [force, setForce] = useState(22);
+  const [shape, setShape] = useState("sphere");
+  const settings = useRef({ speed, force, shape });
   const target = useRef(false);
   const redraw = useRef<(() => void) | null>(null);
 
@@ -76,7 +84,10 @@ export function SignatureConstellation({
 
     function draw(now: number) {
       frame = 0;
-      const animate = !paused && !motion.matches;
+      const animate =
+        !paused &&
+        !motion.matches &&
+        !document.documentElement.classList.contains("discovery-quiet");
       const dt = previous ? Math.min((now - previous) / 1000, 0.05) : 0;
       previous = now;
       if (animate) time += dt;
@@ -85,22 +96,38 @@ export function SignatureConstellation({
         : Number(target.current);
       ctx!.clearRect(0, 0, width, height);
       const radius = Math.min(width * 0.47, height * 0.47);
-      const turn = time * 0.12;
+      const turn = time * 0.12 * settings.current.speed;
       const points = stars.map((star, i) => {
-        const x = star.x * Math.cos(turn) - star.z * Math.sin(turn);
-        const z = star.x * Math.sin(turn) + star.z * Math.cos(turn);
+        const angle = (i / COUNT) * Math.PI * 2;
+        const base =
+          settings.current.shape === "ring"
+            ? {
+                x: Math.cos(angle),
+                y: Math.sin(angle) * 0.52,
+                z: Math.sin(angle) * 0.3,
+              }
+            : settings.current.shape === "helix"
+              ? {
+                  x: Math.cos(angle * 3) * 0.7,
+                  y: 1 - (i / COUNT) * 2,
+                  z: Math.sin(angle * 3) * 0.7,
+                }
+              : star;
+        const x = base.x * Math.cos(turn) - base.z * Math.sin(turn);
+        const z = base.x * Math.sin(turn) + base.z * Math.cos(turn);
         const letter = letters[Math.floor((i * letters.length) / COUNT)] ?? {
           x: 0,
           y: 0,
         };
         let px = width / 2 + (x * (1 - blend) + letter.x * blend) * radius;
         let py =
-          height / 2 + (star.y * (1 - blend) + letter.y * blend) * radius;
+          height / 2 + (base.y * (1 - blend) + letter.y * blend) * radius;
         if (animate) {
           const dx = px - pointer.x;
           const dy = py - pointer.y;
           const distance = Math.hypot(dx, dy);
-          const force = Math.max(0, 1 - distance / 110) * 22;
+          const force =
+            Math.max(0, 1 - distance / 110) * settings.current.force;
           px += (dx / (distance || 1)) * force;
           py += (dy / (distance || 1)) * force;
           if (ripple) {
@@ -203,6 +230,7 @@ export function SignatureConstellation({
     area.addEventListener("pointerup", leave);
     document.addEventListener("visibilitychange", refresh);
     motion.addEventListener("change", refresh);
+    window.addEventListener("portfolio-quiet-change", refresh);
     redraw.current = refresh;
     theme();
     resize();
@@ -218,6 +246,7 @@ export function SignatureConstellation({
       area.removeEventListener("pointerup", leave);
       document.removeEventListener("visibilitychange", refresh);
       motion.removeEventListener("change", refresh);
+      window.removeEventListener("portfolio-quiet-change", refresh);
     };
   }, [labels.initials, paused]);
 
@@ -225,6 +254,11 @@ export function SignatureConstellation({
     target.current = signature;
     redraw.current?.();
   }, [signature]);
+
+  useEffect(() => {
+    settings.current = { speed, force, shape };
+    redraw.current?.();
+  }, [speed, force, shape]);
 
   return (
     <figure
@@ -264,6 +298,79 @@ export function SignatureConstellation({
           </button>
         </div>
         <p className="constellation-hint">{labels.hint}</p>
+        <button
+          id="discovery-stars"
+          type="button"
+          className="constellation-settings-trigger"
+          aria-expanded={settingsOpen}
+          aria-controls="star-settings"
+          onClick={() => {
+            setSettingsOpen(!settingsOpen);
+            discover("stars");
+          }}
+        >
+          {nl ? "Sterrenatelier" : "Star studio"}{" "}
+          <span aria-hidden="true">⌘</span>
+        </button>
+        {settingsOpen && (
+          <div id="star-settings" className="star-settings">
+            <label>
+              {nl ? "Draaisnelheid" : "Rotation speed"}{" "}
+              <output>{speed.toFixed(1)}×</output>
+              <input
+                type="range"
+                min="0"
+                max="3"
+                step="0.1"
+                value={speed}
+                onChange={(event) => setSpeed(Number(event.target.value))}
+              />
+            </label>
+            <label>
+              {nl ? "Aantrekken ↔ afstoten" : "Attract ↔ repel"}{" "}
+              <output>{force}</output>
+              <input
+                type="range"
+                min="-45"
+                max="45"
+                value={force}
+                onChange={(event) => setForce(Number(event.target.value))}
+              />
+            </label>
+            <label>
+              {nl ? "Vorm" : "Shape"}
+              <select
+                value={shape}
+                onChange={(event) => {
+                  setShape(event.target.value);
+                  setSignature(false);
+                }}
+              >
+                <option value="sphere">{nl ? "Bol" : "Sphere"}</option>
+                <option value="ring">{nl ? "Ring" : "Ring"}</option>
+                <option value="helix">{nl ? "Spiraal" : "Helix"}</option>
+              </select>
+            </label>
+            <p>
+              {nl
+                ? "180 punten draaien in 3D en worden op dit vlak geprojecteerd. Beweeg je muis of vinger bij de sterren. Negatieve kracht trekt ze aan, positieve kracht stoot ze af. Minder beweging of pauze houdt het beeld stil."
+                : "180 points rotate in 3D and are projected onto this plane. Move your mouse or finger near the stars. Negative force attracts them, positive force repels them. Reduced motion or pause keeps the image still."}
+            </p>
+            <button
+              className="text-link"
+              type="button"
+              onClick={() => {
+                setSpeed(1);
+                setForce(22);
+                setShape("sphere");
+                setSignature(false);
+                setPaused(false);
+              }}
+            >
+              {nl ? "Herstel standaard" : "Reset defaults"} ↺
+            </button>
+          </div>
+        )}
       </figcaption>
     </figure>
   );

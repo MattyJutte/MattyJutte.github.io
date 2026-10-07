@@ -1,5 +1,8 @@
 "use client";
 
+import { DiscoveryHub } from "@/components/discovery/discovery-hub";
+import { SkillSignal, FooterRobot } from "@/components/discovery/surprises";
+import { openDiscovery } from "@/lib/discovery/events";
 import Image from "next/image";
 import { SignatureConstellation } from "@/components/signature-constellation";
 import { InteractiveEffects } from "@/components/interactive-effects";
@@ -20,7 +23,7 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
       </a>
       <Header
         name={c.profile.name}
-        initials={c.profile.initials}
+        initials={c.hero.constellation.initials}
         navigation={c.navigation}
         labels={c.ui}
         language={language}
@@ -28,6 +31,7 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
       />
       <ScrollReveal />
       <InteractiveEffects />
+      <DiscoveryHub />
       <main id="inhoud">
         <section id="boven" className="hero" aria-labelledby="hero-title">
           <div className="hero-glow" aria-hidden="true" />
@@ -186,11 +190,15 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
           <div className="container">
             <SectionHeading {...c.skills} id="skills-title" />
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {c.skills.groups.map((group) => (
+              {c.skills.groups.map((group, index) => (
                 <article className="skill-card" data-reveal key={group.title}>
-                  <span className="icon-tile">
-                    <Icon name={group.icon} size={23} />
-                  </span>
+                  {index === 0 ? (
+                    <SkillSignal />
+                  ) : (
+                    <span className="icon-tile">
+                      <Icon name={group.icon} size={23} />
+                    </span>
+                  )}
                   <h3>{group.title}</h3>
                   <p>{group.description}</p>
                   <ul className="badges">
@@ -200,6 +208,36 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
                   </ul>
                 </article>
               ))}
+            </div>
+            <div className="lab-invitation" data-reveal>
+              <div className="lab-preview" aria-hidden="true">
+                <span>S</span>
+                <i />
+                <i />
+                <i />
+                <span>E</span>
+              </div>
+              <div>
+                <p className="eyebrow">MJ / LAB</p>
+                <h3>
+                  {language === "nl"
+                    ? "Van code naar een kortste route."
+                    : "From code to a shortest path."}
+                </h3>
+                <p>
+                  {language === "nl"
+                    ? "Bouw een doolhof en kijk hoe een algoritme zijn weg vindt."
+                    : "Build a maze and watch an algorithm find its way."}
+                </p>
+              </div>
+              <button
+                type="button"
+                className="button button-secondary"
+                onClick={() => openDiscovery("lab")}
+              >
+                {language === "nl" ? "Open het lab" : "Open the lab"}{" "}
+                <Icon name="arrowUpRight" size={17} />
+              </button>
             </div>
           </div>
         </section>
@@ -284,6 +322,18 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
                 <Icon name={hobby.icon} size={25} />
                 <h3>{hobby.title}</h3>
                 <p>{hobby.text}</p>
+                {hobby.icon === "flag" && (
+                  <button
+                    type="button"
+                    className="text-link hobby-play"
+                    onClick={() => openDiscovery("golf")}
+                  >
+                    {language === "nl"
+                      ? "Een rondje minigolf?"
+                      : "A round of mini golf?"}{" "}
+                    <span aria-hidden="true">↗</span>
+                  </button>
+                )}
               </article>
             ))}
           </div>
@@ -345,7 +395,10 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
           <span>.</span>
           <small>© {new Date().getFullYear()}</small>
         </a>
-        <p>{c.footer.note}</p>
+        <div>
+          <p>{c.footer.note}</p>
+          <FooterRobot />
+        </div>
         <a href="#boven" className="text-link">
           {c.ui.backToTop}
           <Icon name="arrowUp" size={16} />

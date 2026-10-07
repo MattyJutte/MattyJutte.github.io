@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { LogoBurst } from "@/components/discovery/surprises";
 import { Icon } from "@/components/icon";
 import type { Language, SiteContent } from "@/data/content";
 
@@ -82,21 +83,44 @@ export function Header({
   return (
     <header ref={header} className="site-header">
       <div className="container header-inner">
-        <a
-          href="#boven"
-          className="brand"
-          aria-label={`${name} — ${labels.home}`}
-          onClick={() => setMenuOpen(false)}
-        >
-          <span className="brand-mark">
-            {initials}
-            <span>.</span>
-          </span>
-          <span className="brand-name">
+        <div className="brand">
+          <button
+            id="discovery-initials"
+            className="brand-mark brand-secret"
+            type="button"
+            aria-label={
+              language === "nl"
+                ? "MJ verrassing. Tik vijf keer voor een geheim."
+                : "MJ surprise. Tap five times for a secret."
+            }
+            title={language === "nl" ? "MJ × 5?" : "MJ × 5?"}
+            onClick={() =>
+              window.dispatchEvent(new Event("portfolio-logo-tap"))
+            }
+          >
+            <LogoBurst>
+              {initials}
+              <span>.</span>
+            </LogoBurst>
+          </button>
+          <a
+            href="#boven"
+            className="brand-mobile-home"
+            aria-label={labels.home}
+            onClick={() => setMenuOpen(false)}
+          >
+            <Icon name="arrowUp" size={16} />
+          </a>
+          <a
+            href="#boven"
+            aria-label={`${name} — ${labels.home}`}
+            onClick={() => setMenuOpen(false)}
+            className="brand-name brand-home"
+          >
             {name}
             <span>.</span>
-          </span>
-        </a>
+          </a>
+        </div>
         <nav aria-label={labels.navigation} className="desktop-nav">
           {navigation.map((item) => (
             <a
