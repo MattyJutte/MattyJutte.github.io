@@ -108,7 +108,7 @@ export const content = {
     periodLabel: "Stageperiode",
     period: "31 augustus 2026 — heden",
     stackLabel: "Mijn technische basis",
-    stack: ["React", "Next.js", "NestJS", "PostgreSQL", "Git", "Scrum"],
+    stack: ["React", "Next.js", "NestJS", "PostgreSQL", "Git", "Scrum", "postman"],
   },
   skills: {
     number: "02",
@@ -143,6 +143,7 @@ export const content = {
           "React",
           "Next.js",
           "JavaScript",
+          "typescript",
           "HTML",
           "CSS",
           "Tailwind CSS",
@@ -152,7 +153,7 @@ export const content = {
         icon: "terminal",
         title: "Backend",
         description: "De logica onder de motorkap",
-        items: ["NestJS", "Node.js", "Java", "Python", "C#"],
+        items: ["NestJS", "Node.js", "Java", "Python", "C#", "Swagger", "postman"],
       },
       {
         icon: "database",
@@ -185,18 +186,17 @@ export const content = {
     educationTitle: "Opleiding",
     journey: {
       label: "EEN PAD IN BEWEGING",
-      hint: "Scroll langs mijn stappen. Tik op een halte en stuur een lichtsignaal.",
+      hint: "Eén tijdlijn voor werk en studie. Scroll verder en de volgende halte licht vanzelf op.",
       reverse: "Keer de tijd om",
       oldestFirst: "TOEN → NU",
       newestFirst: "NU → TOEN",
-      signalTo: "Stuur een lichtsignaal naar",
-      selected: "Geselecteerde halte",
       current: "Nu",
     },
     jobs: [
       {
         title: "Stagiair",
         organization: "Competa IT BV",
+        timelineOrder: 5,
         period: "31 augustus 2026 — heden",
         description:
           "Mijn kennis van Software Engineering in de praktijk brengen.",
@@ -207,7 +207,8 @@ export const content = {
       {
         title: "Afwasser / kok",
         organization: "Restaurant Pex",
-        period: "05-2024 — heden",
+        timelineOrder: 2,
+        period: "05-2023 — heden",
         description:
           "Omgaan met collega’s en klanten, samenwerken en het overzicht bewaren onder druk.",
         current: false,
@@ -215,6 +216,7 @@ export const content = {
       {
         title: "Medewerker skiafdeling",
         organization: "De Uithof",
+        timelineOrder: 1,
         period: "11-2022 — 04-2023",
         description:
           "Klanten voorzien van skispullen en zorgen voor het onderhoud van de skibaan.",
@@ -225,6 +227,7 @@ export const content = {
       {
         title: "Software Engineering",
         organization: "De Haagse Hogeschool · Den Haag",
+        timelineOrder: 4,
         period: "2024 — heden · 3e studiejaar",
         description: "Propedeusediploma behaald en twee studiejaren afgerond.",
         detail: "Propedeuse behaald",
@@ -232,6 +235,7 @@ export const content = {
       {
         title: "Havo",
         organization: "Dalton Den Haag",
+        timelineOrder: 3,
         period: "Geslaagd in 2024",
         description:
           "Technische vakken: scheikunde, natuurkunde, wiskunde B en biologie.",
@@ -444,12 +448,10 @@ export const englishContent: SiteContent = {
     educationTitle: "Education",
     journey: {
       label: "A PATH IN MOTION",
-      hint: "Scroll through my journey. Tap a stop to send a light signal.",
+      hint: "One timeline for work and study. Scroll on and the next stop lights up automatically.",
       reverse: "Reverse time",
       oldestFirst: "THEN → NOW",
       newestFirst: "NOW → THEN",
-      signalTo: "Send a light signal to",
-      selected: "Selected stop",
       current: "Now",
     },
     jobs: [
