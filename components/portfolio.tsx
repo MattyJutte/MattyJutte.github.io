@@ -14,6 +14,7 @@ import { ScrollReveal } from "@/components/scroll-reveal";
 import { SectionHeading } from "@/components/section-heading";
 import { SkillUniverse } from "@/components/skill-universe";
 import { JourneyTimeline } from "@/components/journey-timeline";
+import { SportStory } from "@/components/sport-story";
 import { useLanguage } from "@/lib/use-language";
 
 export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
@@ -242,24 +243,13 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
           aria-labelledby="personal-title"
         >
           <SectionHeading {...c.personal} id="personal-title" />
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <SportStory />
+          <div className="personal-downtime grid gap-4 sm:grid-cols-2">
             {c.personal.hobbies.map((hobby) => (
               <article className="hobby-card" data-reveal key={hobby.title}>
                 <Icon name={hobby.icon} size={25} />
                 <h3>{hobby.title}</h3>
                 <p>{hobby.text}</p>
-                {hobby.icon === "flag" && (
-                  <button
-                    type="button"
-                    className="text-link hobby-play"
-                    onClick={() => openDiscovery("golf")}
-                  >
-                    {language === "nl"
-                      ? "Een rondje minigolf?"
-                      : "A round of mini golf?"}{" "}
-                    <span aria-hidden="true">↗</span>
-                  </button>
-                )}
               </article>
             ))}
           </div>
