@@ -116,6 +116,24 @@ export const content = {
     title: "De techniek achter het werk.",
     description:
       "Van interface tot database. Dit zijn de talen, tools en werkwijzen waarmee ik aan de slag kan.",
+    universe: {
+      label: "MIJN SKILL-UNIVERSUM",
+      core: "alles verbonden",
+      hint: "Kies een planeet. Ontdek de techniek.",
+      navigation: "Verken mijn skillcategorieën",
+      selected: "Geselecteerde categorie",
+      previous: "Vorige skillcategorie",
+      next: "Volgende skillcategorie",
+      pause: "Skill-universum pauzeren",
+      play: "Skill-universum afspelen",
+      contextLabel: "HOE HET SAMENKOMT",
+      contexts: [
+        "Hier wordt een idee zichtbaar: van de opbouw van een pagina tot de interactie met de gebruiker.",
+        "Hier komt de logica samen: invoer verwerken, regels toepassen en de interface van een antwoord voorzien.",
+        "Hier krijgt informatie een plek: data structureren, opslaan en weer terugvinden.",
+        "Deze tools en werkwijzen verbinden de stappen: code delen, API’s onderzoeken en samenwerken in een team.",
+      ],
+    },
     groups: [
       {
         icon: "code",
@@ -165,6 +183,16 @@ export const content = {
       "Ervaring opdoen, kennis opbouwen en steeds een stap verder komen.",
     workTitle: "Werkervaring",
     educationTitle: "Opleiding",
+    journey: {
+      label: "EEN PAD IN BEWEGING",
+      hint: "Scroll langs mijn stappen. Tik op een halte en stuur een lichtsignaal.",
+      reverse: "Keer de tijd om",
+      oldestFirst: "TOEN → NU",
+      newestFirst: "NU → TOEN",
+      signalTo: "Stuur een lichtsignaal naar",
+      selected: "Geselecteerde halte",
+      current: "Nu",
+    },
     jobs: [
       {
         title: "Stagiair",
@@ -371,6 +399,24 @@ export const englishContent: SiteContent = {
     title: "The technology behind the work.",
     description:
       "From interface to database. These are the languages, tools and ways of working I can put to use.",
+    universe: {
+      label: "MY SKILL UNIVERSE",
+      core: "all connected",
+      hint: "Choose a planet. Explore the technology.",
+      navigation: "Explore my skill categories",
+      selected: "Selected category",
+      previous: "Previous skill category",
+      next: "Next skill category",
+      pause: "Pause skill universe",
+      play: "Play skill universe",
+      contextLabel: "HOW IT CONNECTS",
+      contexts: [
+        "Where an idea becomes visible: from the structure of a page to the way a user interacts with it.",
+        "Where the logic comes together: processing input, applying rules and sending a response to the interface.",
+        "Where information finds its place: structuring, storing and retrieving data.",
+        "These tools and ways of working connect the steps: sharing code, exploring APIs and collaborating as a team.",
+      ],
+    },
     groups: [
       {
         ...content.skills.groups[0],
@@ -396,6 +442,16 @@ export const englishContent: SiteContent = {
       "Gaining experience, building knowledge and taking the next step.",
     workTitle: "Work experience",
     educationTitle: "Education",
+    journey: {
+      label: "A PATH IN MOTION",
+      hint: "Scroll through my journey. Tap a stop to send a light signal.",
+      reverse: "Reverse time",
+      oldestFirst: "THEN → NOW",
+      newestFirst: "NOW → THEN",
+      signalTo: "Send a light signal to",
+      selected: "Selected stop",
+      current: "Now",
+    },
     jobs: [
       {
         ...content.experience.jobs[0],

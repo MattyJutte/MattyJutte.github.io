@@ -1,7 +1,7 @@
 "use client";
 
 import { DiscoveryHub } from "@/components/discovery/discovery-hub";
-import { SkillSignal, FooterRobot } from "@/components/discovery/surprises";
+import { FooterRobot } from "@/components/discovery/surprises";
 import { openDiscovery } from "@/lib/discovery/events";
 import Image from "next/image";
 import { SignatureConstellation } from "@/components/signature-constellation";
@@ -12,6 +12,8 @@ import { Header } from "@/components/header";
 import { Icon } from "@/components/icon";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { SectionHeading } from "@/components/section-heading";
+import { SkillUniverse } from "@/components/skill-universe";
+import { JourneyTimeline } from "@/components/journey-timeline";
 import { useLanguage } from "@/lib/use-language";
 
 export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
@@ -189,26 +191,7 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
         >
           <div className="container">
             <SectionHeading {...c.skills} id="skills-title" />
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {c.skills.groups.map((group, index) => (
-                <article className="skill-card" data-reveal key={group.title}>
-                  {index === 0 ? (
-                    <SkillSignal />
-                  ) : (
-                    <span className="icon-tile">
-                      <Icon name={group.icon} size={23} />
-                    </span>
-                  )}
-                  <h3>{group.title}</h3>
-                  <p>{group.description}</p>
-                  <ul className="badges">
-                    {group.items.map((skill) => (
-                      <li key={skill}>{skill}</li>
-                    ))}
-                  </ul>
-                </article>
-              ))}
-            </div>
+            <SkillUniverse />
             <div className="lab-invitation" data-reveal>
               <div className="lab-preview" aria-hidden="true">
                 <span>S</span>
@@ -249,64 +232,7 @@ export function Portfolio({ cvAvailable }: { cvAvailable: boolean }) {
         >
           <div className="container">
             <SectionHeading {...c.experience} id="experience-title" />
-            <div className="experience-grid">
-              <div data-reveal>
-                <h3 className="timeline-heading">
-                  <Icon name="briefcase" size={21} />
-                  {c.experience.workTitle}
-                </h3>
-                <div className="timeline">
-                  {c.experience.jobs.map((job) => (
-                    <article
-                      className={`timeline-item ${job.current ? "is-current" : ""}`}
-                      key={job.organization}
-                    >
-                      <span className="timeline-marker" />
-                      <p className="timeline-period">{job.period}</p>
-                      <h4>{job.title}</h4>
-                      <p className="timeline-organization">
-                        {job.organization}
-                      </p>
-                      <p className="timeline-description">{job.description}</p>
-                      {job.href && (
-                        <a className="text-link" href={job.href}>
-                          {job.linkLabel}
-                          <Icon name="arrowUpRight" size={15} />
-                        </a>
-                      )}
-                    </article>
-                  ))}
-                </div>
-              </div>
-              <div data-reveal>
-                <h3 className="timeline-heading">
-                  <Icon name="graduation" size={23} />
-                  {c.experience.educationTitle}
-                </h3>
-                <div className="timeline">
-                  {c.experience.education.map((education) => (
-                    <article
-                      className="timeline-item"
-                      key={education.organization}
-                    >
-                      <span className="timeline-marker" />
-                      <p className="timeline-period">{education.period}</p>
-                      <h4>{education.title}</h4>
-                      <p className="timeline-organization">
-                        {education.organization}
-                      </p>
-                      <p className="timeline-description">
-                        {education.description}
-                      </p>
-                      <span className="education-detail">
-                        <Icon name="check" size={14} />
-                        {education.detail}
-                      </span>
-                    </article>
-                  ))}
-                </div>
-              </div>
-            </div>
+            <JourneyTimeline />
           </div>
         </section>
 
